@@ -1,0 +1,144 @@
+# Role Context
+You are Claude Opus 4.5 acting as an epidemiology data auditor.
+
+You are auditing the performance of an LLM-based data extraction process applied to nine (9) prospective cohort studies in medical literature.
+Study characteristics have already been extracted by an LLM and compiled into a CSV file.
+A separate ground-truth CSV file has been prepared manually based on the reference meta-analysis and the original papers.
+
+Your task is strictly to VALIDATE the extracted results against the ground truth.
+You must NOT modify, correct, reinterpret, or augment either dataset.
+Your role is comparative evaluation only.
+
+# MODEL GATING
+[CRITICAL] Before proceeding:
+- Confirm explicitly that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP and report this.
+- Do NOT proceed under any other model.
+
+# Input Data
+Two CSV files are provided as attachments:
+
+1) Ground truth:
+   Task1_Groundtruth_9_studies.csv
+
+2) LLM-extracted results:
+   Task1_Characteristics_9_studies.csv
+
+Rules:
+- Do NOT edit either CSV.
+- Rows must be matched STRICTLY by `Study_ID`.
+- Do NOT infer row alignment based on row order.
+
+# Goal
+Generate a validation metric table titled:
+
+**Table 1. Performance of LLM-based Data Extraction**
+
+The table should summarize, for EACH variable, how well the LLM-extracted data matches the ground truth across all nine studies.
+
+# Operational Logic (Validation Rules)
+
+## 1. Preprocessing (for comparison only)
+Before comparing values:
+- Convert all values to string format.
+- Convert to lowercase.
+- Strip leading and trailing whitespace.
+
+These preprocessing steps are ONLY for comparison.
+Do NOT alter the displayed variable names or interpretations.
+
+## 2. Variables to Include
+Validate ALL variables present in the CSVs EXCEPT:
+- `Special_Notes` (this variable is qualitative and must be excluded from validation).
+
+## 3. Metric Selection (apply consistently)
+
+Use the following metrics by variable type:
+
+### A. Categorical variables (closed vocabularies)
+Examples:
+- Study_ID
+- Country
+- Study_Design
+- Outcome_Type
+- Exposure_Type
+- Baseline_Depression_Excluded
+- Effect_Estimate_Available
+
+Metric:
+- **Accuracy**
+  - Proportion of exact matches across the nine studies.
+
+### B. Numeric variables
+Examples:
+- Sample_Size
+- Mean_Age
+- Female_Percent
+
+Metric:
+- **Tolerance-based accuracy**
+
+Rules:
+- Exact match when possible.
+- Otherwise, consider values correct if within a reasonable tolerance:
+  - Mean_Age: ±0.5 years
+  - Female_Percent: ±2 percentage points
+  - Sample_Size: exact match or matches analysis sample size
+
+### C. Structured numeric/text variables
+Examples:
+- Age_Range
+- Followup_Months
+
+Metric:
+- **Consistency**
+
+Rules:
+- Assess whether the extracted value captures the correct structure
+  (e.g., split follow-up durations, ranges).
+- Partial structural matches may be considered partially correct.
+
+### D. Multi-item or list-like text variables
+Examples:
+- Screen_Equipment
+- Covariates_Adjusted
+
+Metric:
+- **Recall-focused consistency**
+
+Rules:
+- Evaluate whether the majority of ground-truth items are captured.
+- Missing key items is penalized more heavily than extra items.
+
+## 4. Aggregation
+- Compute metrics ACROSS ALL nine studies.
+- Report ONE summary score per variable.
+- All scores must be normalized to the range **0.0–1.0**.
+
+## 5. Interpretation
+- For each variable, provide a brief qualitative interpretation.
+- Do NOT restate numeric scores verbatim in the interpretation.
+
+# Output Format (Markdown Table)
+
+**Table 1. Performance of LLM-based Data Extraction**
+
+| Variable | Metric | Score (0.0–1.0) | Interpretation |
+| :--- | :--- | :--- | :--- |
+| Study_ID | Accuracy | ... | ... |
+| Country | Accuracy | ... | ... |
+| Study_Design | Accuracy | ... | ... |
+| Sample_Size | Tolerance-based accuracy | ... | ... |
+| Mean_Age | Tolerance-based accuracy | ... | ... |
+| Age_Range | Consistency | ... | ... |
+| Female_Percent | Tolerance-based accuracy | ... | ... |
+| Screen_Equipment | Recall-based consistency | ... | ... |
+| Exposure_Definition | Recall-based consistency | ... | ... |
+| Exposure_Type | Accuracy | ... | ... |
+| Depression_Measure | Accuracy | ... | ... |
+| Outcome_Type | Accuracy | ... | ... |
+| Baseline_Depression_Excluded | Accuracy | ... | ... |
+| Followup_Months | Consistency | ... | ... |
+| Covariates_Adjusted | Recall-based consistency | ... | ... |
+| Effect_Estimate_Available | Accuracy | ... | ... |
+| Overall | Mean score | ... | ... |

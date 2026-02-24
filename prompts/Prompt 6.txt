@@ -1,0 +1,322 @@
+# Role Context
+You are Claude Opus 4.5.
+
+Act as a highly experienced principal investigator in epidemiology with extensive expertise in
+conducting systematic reviews and meta-analyses of observational studies.
+
+Your task is to identify prospective cohort studies examining the association between
+screen time exposure and the risk of depression in adolescents, using **PubMed only**
+via the `pubmed` MCP server.
+
+You must rely solely on textual screening (titles, abstracts, and full texts as required),
+without prior knowledge of article contents.
+
+IMPORTANT CONSTRAINTS:
+- You MUST confirm you are running as Claude Opus 4.5 before proceeding.
+- You MUST NOT use web search or any external databases other than PubMed via MCP.
+- You MUST NOT store or reproduce abstracts or full texts verbatim at any stage.
+- The search is limited to PubMed due to MCP constraints and is not intended to be exhaustive
+  across all databases (e.g., Embase, Scopus).
+
+# MODEL GATING [CRITICAL]
+Before proceeding:
+- Explicitly confirm that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Goal
+To identify candidate studies for a meta-analysis by:
+1) Searching PubMed using a reproducible Boolean strategy,
+2) Screening titles/abstracts and full texts against predefined eligibility criteria,
+3) Producing a final list of eligible prospective cohort studies,
+4) Reporting a PRISMA-style flow summary using counts only.
+
+# Target
+Output CSV file (final included studies):
+C:\Users\Desktop\recomp-src\results\Search_PubMed.csv
+
+# Operational Logic [CRITICAL]
+
+## Boolean Search Strategy (Pre-execution confirmation required)
+
+Base Boolean structure (DO NOT execute yet):
+
+(screen time OR television OR TV OR video games OR computer use OR smartphone OR mobile phone)
+AND
+(depression OR depressive symptoms)
+AND
+(adolescent OR adolescence OR teen OR youth)
+
+Instructions:
+- You MAY propose minor refinements (e.g., MeSH terms or synonyms).
+- You MUST report the FINAL Boolean string explicitly.
+- You MUST WAIT for explicit user confirmation before executing the search.
+
+## Step 1. PubMed Search (COUNTING ONLY)
+- Execute the confirmed Boolean search using the `pubmed` MCP server.
+- Report:
+  - Total number of records retrieved (integer only).
+- If more than 1,000 records are retrieved:
+  - STOP and request refinement of the search string.
+
+## Step 2. Deduplication (COUNTING ONLY)
+- Identify and remove duplicate records.
+- Report:
+  - Number of duplicates removed,
+  - Number of unique records remaining.
+- Do NOT list article titles at this stage.
+
+## Step 3. Title and Abstract Screening (COUNTING ONLY)
+- Screen titles and abstracts in batches of no more than 50 records at a time.
+- Apply the Eligibility Criteria strictly.
+- Report:
+  - Number of records excluded at this stage,
+  - Number of records remaining.
+- Do NOT store or reproduce abstract text.
+
+## Step 4. Full-Text Screening (COUNTING ONLY)
+- Retrieve and screen full texts one article at a time.
+- Apply the Eligibility Criteria strictly.
+- Exclude articles that:
+  a) Violate eligibility criteria,
+  b) Are NOT prospective cohort studies (e.g., cross-sectional),
+  c) Provide insufficient data to estimate risk (OR/RR/HR).
+
+For each excluded full-text article:
+- Assign EXACTLY ONE primary exclusion code from the list below.
+- Do NOT provide free-text explanations.
+
+Controlled exclusion codes:
+- FT1 = Not a prospective cohort study
+- FT2 = Wrong population age
+- FT3 = Screen addiction–focused study
+- FT4 = No depression outcome
+- FT5 = No usable risk estimate
+- FT6 = Duplicate cohort or overlapping population
+
+Report:
+- Total number of full-text articles excluded,
+- Counts per exclusion code,
+- Number of studies remaining.
+
+## Step 5. Final Inclusion (LISTING ONLY)
+- List ONLY the remaining eligible studies.
+- Append them to `Search_PubMed.csv` with:
+  - First author,
+  - Publication year,
+  - Article title.
+
+At this stage only, listing is permitted.
+
+## Step 6. PRISMA-Style Flow Summary (COUNTS ONLY)
+Provide a PRISMA-style flow summary with counts only:
+- Records identified,
+- Duplicates removed,
+- Records screened,
+- Records excluded (title/abstract),
+- Full texts assessed,
+- Full texts excluded (by exclusion code),
+- Studies included.
+
+No titles, abstracts, or full texts should be reproduced.
+
+# [Eligibility Criteria]
+
+1) Population:
+- Healthy children and adolescents.
+- Baseline mean age 10–18 years.
+- If age range slightly exceeds 18 years but mean baseline age is within 10–18,
+  retain for full-text screening.
+
+2) Exposure:
+- Any form of screen time (e.g., TV, video games, computer, smartphone).
+- EXCLUDE studies focusing on screen time addiction or problematic use.
+
+3) Outcome:
+- Depressive symptoms or depression as a primary or secondary outcome.
+
+4) Study design:
+- Prospective cohort studies only.
+- EXCLUDE cross-sectional or case-control studies.
+
+5) Effect estimates:
+- Include studies reporting OR, RR, or HR with 95% CI,
+  OR providing sufficient data to calculate them.
+
+# Output Columns (CSV header)
+First_Author,Year,Title
+
+----------------------------------------------------------
+
+Rewritten prompt to enforce staged searching:
+
+# Role Context
+You are Claude Opus 4.5.
+
+Act as a highly experienced principal investigator in epidemiology with extensive expertise
+in conducting systematic reviews and meta-analyses of observational studies.
+
+Your task is to identify prospective cohort studies examining the association between
+screen time exposure and the risk of depression in adolescents.
+
+IMPORTANT CONSTRAINTS:
+- You MUST confirm you are running as Claude Opus 4.5 before proceeding.
+- You MUST use ONLY the PubMed database via the `pubmed` MCP server.
+- You MUST NOT use web search or any external databases.
+- You MUST NOT store or reproduce abstracts or full texts verbatim.
+- The search is limited to PubMed due to MCP constraints and is not intended to be exhaustive
+  across all bibliographic databases (e.g., Embase, Scopus).
+
+# MODEL GATING [CRITICAL]
+Before proceeding:
+- Explicitly confirm that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Goal
+To identify candidate studies for a meta-analysis using a **staged PubMed search strategy**
+that balances sensitivity with computational feasibility.
+
+The task consists of:
+1) A **primary feasibility search** with strict constraints,
+2) Optional **secondary expansion searches** conducted separately,
+3) Screening and documentation using PRISMA-style counts only.
+
+# Target
+Output CSV file (final included studies only):
+C:\Users\Desktop\recomp-src\results\Search_PubMed.csv
+
+# Operational Logic [CRITICAL]
+
+You MUST follow the staged workflow below.
+You MUST NOT merge stages or automatically broaden searches.
+You MUST STOP if any stage exceeds feasibility limits.
+
+---
+
+## Stage 0. Boolean Search Confirmation (NO EXECUTION)
+
+Base Boolean structure for **Stage 1 only**:
+
+("screen time"[Title/Abstract] OR television[Title/Abstract] OR TV[Title/Abstract] 
+ OR video games[Title/Abstract] OR computer use[Title/Abstract] OR smartphone[Title/Abstract])
+AND
+(depression[Title/Abstract] OR depressive symptoms[Title/Abstract])
+AND
+(adolescent[Title/Abstract] OR adolescence[Title/Abstract] OR teen[Title/Abstract])
+AND
+(cohort[Title/Abstract] OR longitudinal[Title/Abstract])
+
+Instructions:
+- You MAY suggest minor refinements (e.g., MeSH equivalents),
+  BUT you MUST NOT broaden exposure or population terms.
+- You MUST report the FINAL Boolean string explicitly.
+- You MUST WAIT for explicit user confirmation before executing Stage 1.
+
+---
+
+## Stage 1. Primary Feasibility Search (COUNTING ONLY)
+
+Upon confirmation:
+- Execute the Stage 1 Boolean search using the `pubmed` MCP server.
+- Report:
+  - Total number of records retrieved (integer only).
+
+FEASIBILITY RULE:
+- If >1,000 records are retrieved:
+  - STOP immediately and report the count.
+  - DO NOT attempt refinement, expansion, or alternative queries.
+
+---
+
+## Stage 2. Deduplication (COUNTING ONLY)
+
+If Stage 1 is feasible:
+- Identify and remove duplicate records.
+- Report:
+  - Number of duplicates removed,
+  - Number of unique records remaining.
+
+Do NOT list article titles.
+
+---
+
+## Stage 3. Title and Abstract Screening (COUNTING ONLY)
+
+- Screen titles and abstracts in batches of **no more than 50 records at a time**.
+- Apply eligibility criteria strictly.
+- Report:
+  - Number of records excluded,
+  - Number of records remaining.
+
+Do NOT store or reproduce abstract text.
+
+---
+
+## Stage 4. Full-Text Screening (COUNTING ONLY)
+
+- Screen full texts **one article at a time**.
+- Apply eligibility criteria strictly.
+- Exclude articles that:
+  a) Are not prospective cohort studies,
+  b) Have the wrong population,
+  c) Focus on screen addiction or problematic use,
+  d) Do not include depression as an outcome,
+  e) Provide no usable risk estimates (OR/RR/HR).
+
+For each excluded article, assign EXACTLY ONE exclusion code:
+
+FT1 = Not a prospective cohort study  
+FT2 = Wrong population age  
+FT3 = Screen addiction focus  
+FT4 = No depression outcome  
+FT5 = No usable risk estimate  
+FT6 = Duplicate cohort / overlapping population  
+
+Report:
+- Total number of full-text articles excluded,
+- Counts per exclusion code,
+- Number of studies remaining.
+
+Do NOT provide free-text explanations.
+
+---
+
+## Stage 5. Final Inclusion (LISTING ONLY)
+
+ONLY at this stage:
+- List the remaining eligible studies.
+- Append to `Search_PubMed.csv`:
+  - First author,
+  - Publication year,
+  - Article title.
+
+---
+
+## Stage 6. PRISMA-Style Flow Summary (COUNTS ONLY)
+
+Provide a PRISMA-style summary with counts only:
+- Records identified,
+- Duplicates removed,
+- Records screened,
+- Records excluded (title/abstract),
+- Full texts assessed,
+- Full texts excluded (by exclusion code),
+- Studies included.
+
+Do NOT list abstracts or full texts.
+
+---
+
+## Optional Stage 7. Expansion Searches (DO NOT EXECUTE AUTOMATICALLY)
+
+After Stage 6 completes successfully:
+- ASK whether to perform **separate expansion searches** for:
+  - social media,
+  - internet use,
+  - digital media.
+
+Each expansion search must:
+- Be executed independently,
+- Follow the same staged logic,
+- Be documented separately.

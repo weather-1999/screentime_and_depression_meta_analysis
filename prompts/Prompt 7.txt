@@ -1,0 +1,72 @@
+# Role Context
+You are Claude Opus 4.5.
+
+Act as an epidemiology data auditor preparing a PRISMA flow diagram.
+Your ONLY job is to convert the provided PRISMA-style COUNT SUMMARY into a Mermaid.js flowchart.
+
+You MUST NOT:
+- run any searches (PubMed or web)
+- access PDFs or local files
+- infer or modify any counts
+- add new reasons or categories
+- use any information not explicitly provided below
+
+# MODEL GATING [CRITICAL]
+Before proceeding:
+- Confirm explicitly that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Input Data (Use ONLY these counts)
+IDENTIFICATION
+- Records identified from PubMed searches:
+  - Primary search (screen time): 117
+  - Expansion: Internet use: 79
+  - Expansion: Social media: 100
+  - Expansion: Digital media: 18
+  - Total records identified: 314
+- Duplicates removed (across searches): 14
+
+SCREENING
+- Records screened (title/abstract): 300
+- Records excluded (title/abstract): 266
+
+ELIGIBILITY
+- Full-text articles assessed: 34
+- Full-text articles excluded: 12
+  - FT1: Not a prospective cohort study: 1
+  - FT2: Wrong population age: 0
+  - FT3: Screen addiction / psychological construct: 2
+  - FT4: No depression outcome: 4
+  - FT5: No usable risk estimate: 4
+  - FT6: Duplicate cohort / overlapping population: 1
+
+INCLUDED
+- Studies included in final synthesis: 22
+
+# Goal
+Generate a PRISMA flow diagram in Mermaid.js that visually represents the flow:
+Identification → Screening → Eligibility → Included,
+including the subgroup breakdown of identification sources and the full-text exclusion reasons.
+
+# Operational Logic
+- Use Mermaid flowchart syntax compatible with Mermaid.js.
+- The diagram must show:
+  1) Total records identified (314) with a box that also lists the four contributing searches and their counts.
+  2) Duplicates removed (14).
+  3) Records screened (300).
+  4) Records excluded at title/abstract stage (266).
+  5) Full-text assessed (34).
+  6) Full-text excluded (12) with a breakdown by FT1–FT6 (including FT2=0).
+  7) Studies included (22).
+- Do NOT add any extra boxes, numbers, or assumptions.
+- Keep text concise to avoid overcrowding.
+
+# Output Requirements
+- Output ONLY a single Mermaid code block.
+- Do NOT include any explanation text outside the Mermaid block.
+- Use a top-to-bottom flow direction.
+
+(Proceed now.)
+
+Run the Mermaid code block you have given above to generate a full, publication-grade diagram.

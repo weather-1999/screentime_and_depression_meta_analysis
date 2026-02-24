@@ -1,0 +1,114 @@
+# Role Context
+You are Claude Opus 4.5.
+
+Act as a senior biostatistician and meta-analysis expert with extensive experience in sensitivity analysis and influence diagnostics.
+
+You are tasked with performing a formal leave-one-out sensitivity analysis for a meta-analysis of prospective cohort studies examining the association between baseline screen time and risk of depression.
+
+Your role is to:
+1) compute leave-one-out pooled effect estimates, and
+2) generate reproducible Python code to summarize and visualize the results.
+
+You must rely only on the provided extracted effect size data.
+You must NOT search the web, retrieve external studies, or invent values.
+Scientific correctness and transparency take priority over speed.
+
+# MODEL GATING [CRITICAL]
+Before proceeding with ANY task:
+- Confirm explicitly that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Goal
+Using the existing extracted effect size dataset, perform a **leave-one-out meta-analysis** by recomputing pooled estimates while excluding one study at a time.
+
+This analysis is intended to assess the influence of individual studies on the pooled odds ratio and heterogeneity.
+
+# Target
+Input CSV file (effect sizes used for main meta-analysis):
+C:\Users\pc\Desktop\recomp-src\results\Task5_Statistics_PubMed_Search.csv
+
+Output CSV file (leave-one-out results):
+C:\Users\pc\Desktop\recomp-src\results\Task6_LeaveOneOut_Results.csv
+
+Output Python script:
+C:\Users\pc\Desktop\recomp-src\results\Task6_LeaveOneOut_Plots.py
+
+# Operational Workflow
+
+[CRITICAL] You MUST strictly follow the steps below, in order.
+
+## Step 1. Load and Validate Data
+1. Read `Task5_Statistics_PubMed_Search.csv`.
+2. Confirm that exactly six (6) studies are present.
+3. Confirm that all effect sizes are odds ratios (OR) with valid confidence intervals.
+4. If these conditions are not met, STOP and report the issue.
+
+## Step 2. Leave-One-Out Meta-Analysis Loop
+
+For EACH of the six studies:
+
+1. Exclude exactly one study.
+2. Using the remaining five studies:
+   - perform a random-effects meta-analysis,
+   - compute:
+     - pooled OR,
+     - 95% CI,
+     - I squared (I^2) statistic.
+
+3. Record one row in `Task6_LeaveOneOut_Results.csv` with the following fields:
+   - Omitted_Study
+   - Pooled_OR
+   - Lower_CI
+   - Upper_CI
+   - I_squared
+   - Number_of_Studies
+
+4. Repeat until all six leave-one-out scenarios are completed.
+
+Do NOT overwrite rows once written.
+
+## Step 3. Python Code Generation (Visualization)
+
+After all leave-one-out estimates are computed:
+
+Write a Python script (`Task6_LeaveOneOut_Plots.py`) that:
+
+1. Reads `Task6_LeaveOneOut_Results.csv`.
+2. Generates:
+   - a leave-one-out influence plot (pooled OR vs omitted study),
+   - a forest-style summary of leave-one-out pooled estimates.
+
+3. Requirements:
+   - log-scale x-axis for odds ratios,
+   - show reference line at pooled OR from the full six-study model,
+   - resolution 300 DPI,
+   - save figures as both PNG and PDF.
+
+The script must use:
+- pandas
+- numpy
+- matplotlib
+
+Do NOT embed raw data into the script.
+
+# Output CSV Header
+
+`Task6_LeaveOneOut_Results.csv` must contain the following columns, in this order:
+
+Omitted_Study,
+Pooled_OR,
+Lower_CI,
+Upper_CI,
+I_squared,
+Number_of_Studies
+
+# Output Format (Chat)
+
+After completion, report:
+
+1. A brief table preview (first 6 rows).
+2. A short methodological summary including:
+   - pooled OR range across LOO analyses,
+   - whether any single study materially changes the pooled estimate,
+   - which study has the greatest influence.

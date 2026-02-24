@@ -1,0 +1,102 @@
+# Role Context
+You are Claude Opus 4.5.
+
+Act as an epidemiology data auditor with expertise in meta-analysis.
+Effect size estimates from nine (9) prospective cohort studies examining the association between screen time and depression were already extracted and pooled estimate computed using an LLM-based pipeline.
+
+Your task is to **quantitatively compare** the LLM-extracted effect size values with reference values reported in Guo & Guo, the reference paper, focusing on **agreement of effect size estimates**.
+
+All logarithmic operations MUST use the **natural logarithm (base-e)**.
+
+# MODEL GATING [CRITICAL]
+Before proceeding:
+- Confirm explicitly that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Input Data
+Two CSV files will be provided directly with this prompt:
+
+1) Reference effect size values (manually curated from Guo & Guo):
+   File name: Task2_Reference_9_studies.csv
+
+2) LLM-extracted effect size values:
+   File name: Task2_Statistics_9_studies.csv
+
+Notes:
+- Task2_Reference_9_studies.csv does NOT contain columns for Original_ES or Direction_Action.
+- Confidence interval bounds are provided but are NOT used for comparison in this task.
+
+# Goal
+Generate a table titled:
+
+**Table 3. Comparison of reference and LLM-extracted effect size values**
+
+This table should quantify agreement between Guo & Guo’s reported odds ratios
+and the LLM-extracted odds ratios using absolute differences on the natural log scale.
+
+# Operational Logic (Comparison Rules)
+
+## Step 1. Preprocessing
+- Convert all values to string format.
+- Convert strings to lowercase.
+- Strip leading and trailing whitespace.
+- Match studies STRICTLY by Study_ID.
+- If a Study_ID is present in one file but not the other, exclude it from comparison
+  and report this explicitly.
+
+## Step 2. Study Inclusion / Exclusion
+- Exclude **Kandola et al., 2021** from all comparisons because the primary reported
+  effect size in the original study is an IRR rather than an OR.
+- Perform comparisons only on studies with ORs in BOTH files.
+
+## Step 3. Metric Computation (Study-level)
+For each included study, compute:
+
+\[
+|Δ \ln(OR)| = \left| \ln(OR_{LLM}) - \ln(OR_{Guo}) \right|
+\]
+
+Where:
+- ln() is the natural logarithm.
+- OR_Guo is taken from Task2_Reference_9_studies.csv.
+- OR_LLM is taken from Task2_Statistics_9_studies.csv.
+
+Confidence intervals must NOT be used in this computation.
+
+## Step 4. Pooled Effect Comparison
+- Compute pooled ORs for:
+  a) Guo & Guo reference values
+  b) LLM-extracted values
+- Use the SAME random-effects model for both.
+- Exclude Kandola et al., 2021 from pooled estimates.
+- Compute absolute difference in natural log scale between pooled ORs.
+
+## Step 5. Interpretation Rules
+Interpret |Δ ln(OR)| using the following guide:
+- < 0.05 → Practically identical
+- 0.05–0.10 → Minor discrepancy
+- > 0.10 → Meaningful divergence
+
+# Output Format (Markdown Table)
+
+Generate the following Markdown table:
+
+**Table 3. Comparison of reference and LLM-extracted effect size values**
+
+| Study Authors | OR_Guo | OR_LLM | |Δ ln(OR)| | Interpretation |
+| :--- | :--- | :--- | :--- | :--- |
+| Primack, 2009 | ... | ... | ... | ... |
+| Grøntved, 2015 | ... | ... | ... | ... |
+| Wu, 2016 | ... | ... | ... | ... |
+| Khouja, 2019 | ... | ... | ... | ... |
+| Zink, 2019 | ... | ... | ... | ... |
+| Liu, 2019 | ... | ... | ... | ... |
+| Mars, 2020 | ... | ... | ... | ... |
+| Mougharbel, 2023 | ... | ... | ... | ... |
+| **Pooled effect** | ... | ... | ... | ... |
+
+Notes:
+- Use absolute differences only.
+- Do NOT perform hypothesis testing.
+- Focus on agreement, not statistical superiority.

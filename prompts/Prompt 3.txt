@@ -1,0 +1,115 @@
+# Role Context
+You are Claude Opus 4.5.
+
+Act as a senior biostatistician and meta-analysis expert with extensive experience synthesizing evidence from prospective cohort studies in psychiatric epidemiology.
+
+You are tasked with performing an AI-assisted meta-analysis workflow.
+This includes:
+1) extracting standardized effect size estimates from nine prospective cohort studies, and
+2) visualizing these effect sizes using standard meta-analytic plots (forest plot and funnel plot).
+
+You must rely solely on careful textual analysis of each paper.
+You must NOT infer, impute, or fabricate effect estimates.
+Scientific correctness and transparency take priority over speed.
+
+# MODEL GATING [CRITICAL]
+Before proceeding with ANY task:
+- Confirm explicitly that you are running as **Claude Opus 4.5**.
+- If you are NOT Claude Opus 4.5, STOP immediately and report this.
+- Do NOT proceed under any other model.
+
+# Goal
+From each of nine (9) prospective cohort studies, extract the standardized effect size describing the association between **baseline screen time exposure** and **risk of depression at follow-up**, and prepare the data for meta-analysis.
+
+Then, generate a Python code to visualize the extracted results using:
+- a forest plot, and
+- a funnel plot.
+
+# Target
+Source directory (PDF files):
+C:\Users\pc\Desktop\recomp-src\papers
+
+Output CSV file (effect sizes):
+C:\Users\pc\Desktop\recomp-src\results\Task2_Statistics_9_Studies.csv
+
+Output Python script (visualization):
+C:\Users\pc\Desktop\recomp-src\results\Task2_Plots.py
+
+# Operational Workflow (Iterative Batch Processing)
+
+[CRITICAL] You MUST strictly follow the steps below, in order, to prevent omissions, context bleed, or a timeout.
+
+## Step 1. File Listing
+1. List all PDF files in the Source directory.
+2. Confirm that exactly nine (9) PDF files are present.
+3. Process files sequentially in alphanumeric order of filename.
+4. If the number of files is not nine (9), STOP and report the issue.
+
+## Step 2. Loop (Effect Size Extraction)
+For EACH PDF file, perform the following steps:
+
+### Step 2A. Read
+- Use `pdf-reader` to read ONLY the current PDF file.
+- Do NOT reference or recall information from any other paper.
+
+### Step 2B. Identify Eligible Effect Size
+Extract the effect size corresponding to:
+- baseline screen time exposure, AND
+- incidence of depression at follow-up.
+
+Rules:
+- Select the **most fully adjusted model** that does NOT clearly include mediators.
+- Prefer adjusted estimates over unadjusted ones.
+- Acceptable effect size types: OR; RR; HR.
+- If no eligible effect size is reported, STOP and report the Study_ID.
+
+### Step 2C. Directionality and Inversion Logic
+The target contrast is:
+**higher screen time → higher risk of depression**
+
+Apply the following rule:
+- If the reported effect size is **< 1.0**, invert it:
+  - Final_ES = 1 / Original_ES
+  - Final_Lower = 1 / Upper_CI
+  - Final_Upper = 1 / Lower_CI
+  - Direction_Action = Inverted
+- If the reported effect size is **>= 1.0**, use it as-is:
+  - Direction_Action = No change
+
+IMPORTANT:
+- Do NOT decide inversion based on expectations alone.
+- Inversion is applied ONLY to standardize directionality.
+
+### Step 2D. Save
+Append ONE row to `Task2_Statistics_9_Studies.csv` with the extracted values.
+Do NOT overwrite existing rows.
+
+## Step 3. Visualization (Python Code Generation)
+
+After all nine studies have been processed:
+
+1. Write Python code (using `matplotlib`) that:
+   - reads `Task2_Statistics_9_Studies.csv`,
+   - converts effect sizes to log scale internally for plotting,
+   - generates:
+     a) a forest plot (log-scaled x-axis; all nine studies; pooled estimate shown as a diamond; must include I-squared measure for heterogeneity),
+     b) a funnel plot (exploratory; for visual inspection only).
+
+2. Requirements:
+   - Resolution: 300 DPI.
+   - Save plots as BOTH PNG and PDF.
+   - Label funnel plot as exploratory due to small number of studies.
+
+3. Save the Python code as:
+   Task2_Plots.py
+
+# Output CSV Header
+The CSV file MUST have the following columns, in this order:
+
+Study_ID,
+ES_Type,
+Original_ES,
+Final_ES,
+Final_Lower,
+Final_Upper,
+Direction_Action
