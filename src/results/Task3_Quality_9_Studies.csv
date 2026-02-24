@@ -1,0 +1,10 @@
+Study Authors,Year,Selection: Representativeness,Selection: Non-exposed cohort,Selection: Exposure ascertainment,Selection: Outcome absent at baseline,Comparability: Age/Sex,Comparability: Additional covariates,Outcome: Assessment,Outcome: Follow-up length,Outcome: Follow-up adequacy,Total Score,Quality,Justification
+Primack,2009,1,1,0,1,1,1,0,1,0,6,Medium,"Population-based cohort; self-report exposure/outcome; high attrition (46%)"
+Grøntved,2015,1,1,0,0,1,1,0,1,0,5,Medium,"Representative Danish cohort; did not exclude baseline depression; self-report measures"
+Wu,2016,0,1,0,1,1,1,0,1,1,6,Medium,"Selected college cohort; good retention (82%); self-report measures"
+Khouja,2019,1,1,0,1,1,1,0,1,0,6,Medium,"ALSPAC birth cohort; extensive covariates; high attrition (62% lost)"
+Zink,2019,0,1,0,1,1,1,0,1,1,6,Medium,"Selected high-risk adolescents; short 6-month follow-up; good retention"
+Liu,2019,0,1,0,1,1,1,0,1,1,6,Medium,"Single technical college; self-report exposure/outcome; 78% retained"
+Mars,2020,1,1,0,1,1,1,0,1,0,6,Medium,"ALSPAC cohort; very low questionnaire response rate (16%)"
+Kandola,2021,1,1,0,1,1,1,0,1,1,7,High,"UK Millennium Cohort; 84% retention; multiple imputation validated results"
+Mougharbel,2023,0,1,0,1,1,1,0,1,0,5,Medium,"Convenience school sample; 27% attrition; differential loss noted"

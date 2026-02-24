@@ -1,0 +1,7 @@
+StudyAuthors,Year,Selection_Representativeness,Selection_NonExposed,Selection_ExposureAscertainment,Selection_OutcomeAbsent,Comparability_AgeSex,Comparability_Additional,Outcome_Assessment,Outcome_FollowUpLength,Outcome_FollowUpAdequacy,Total_Score,Quality,Justification
+"McAnally HM",2019,1,1,0,0,1,1,0,1,1,6,Medium,"Self-report exposure; DIS interview not blind; excellent retention 95%"
+"Grøntved A",2015,1,1,0,0,1,1,0,1,0,5,Medium,"Self-report exposure/outcome; 55% loss to follow-up; no baseline screening"
+"Liu Y",2025,1,1,0,0,1,1,0,1,0,5,Medium,"CFPS representative sample; self-report CESD; >20% missing outcome data"
+"Tsomokos DI",2025,1,1,0,0,1,1,0,1,0,5,Medium,"MCS nationally representative; Kessler-6 self-report; differential attrition"
+"Primack BA",2009,1,1,0,1,1,1,0,1,1,7,High,"Add Health representative; excluded baseline depression; 75% retention"
+"Zhang J",2025,0,1,0,0,1,1,0,1,0,4,Low,"School convenience sample; >40% attrition; no baseline depression screen"

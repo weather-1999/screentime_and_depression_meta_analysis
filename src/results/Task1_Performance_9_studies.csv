@@ -1,0 +1,19 @@
+Variable,Metric,Score (0.0–1.0),Interpretation
+Study_ID,Accuracy,1.00,Perfect identification of all study identifiers with correct author names and publication years.
+Country,Accuracy,1.00,All study countries were correctly identified without any discrepancies.
+Study_Design,Accuracy,0.67,Some terminology variations noted; "Longitudinal cohort" and "Prospective observational" were used instead of the standardized "Prospective cohort study" in three cases.
+Sample_Size,Tolerance-based accuracy,0.67,Three discrepancies identified; primarily due to reporting different sample subsets (e.g.; complete cases vs. full imputed sample; or analysis sample vs. baseline sample).
+Mean_Age,Tolerance-based accuracy,0.78,Two studies had missing values where the ground truth contained numeric data; remaining values matched within tolerance.
+Age_SE,Tolerance-based accuracy,0.33,Standard errors were frequently reported as NA in the extracted data; even when values were available in the original papers; this represents systematic under-extraction.
+Age_Range,Consistency,0.67,Three studies had missing or incomplete age range information; however; when reported; the structural format was appropriately captured.
+Female_Percent,Tolerance-based accuracy,0.56,Several discrepancies observed; including one value reversal (likely male/female confusion); approximate values instead of precise figures; and missing data.
+Screen_Equipment,Recall-based consistency,1.00,All screen equipment types were correctly identified across studies; minor formatting variations did not affect content accuracy.
+Exposure_Definition,Recall-based consistency,1.00,Exposure definitions were comprehensively captured with appropriate semantic detail across all nine studies.
+Exposure_Type,Accuracy,0.89,One study misclassified as "categorical" when the ground truth specified "gender-specific" exposure categorization.
+Depression_Measure,Accuracy,1.00,All depression assessment instruments were correctly identified; with appropriate abbreviations and full names.
+Outcome_Type,Accuracy,1.00,Perfect distinction between screening-scale and clinical-diagnosis outcome types across all studies.
+Baseline_Depression_Excluded,Accuracy,0.67,Three discrepancies noted; "Unclear" was used in two cases where ground truth specified definitive values; and one "Yes" was misclassified as "No".
+Followup_Months,Consistency,1.00,Follow-up durations were correctly captured; including complex structures with split follow-up periods or ranges.
+Covariates_Adjusted,Recall-based consistency,0.87,Most key covariates were captured across studies; some minor omissions and additions observed; but core adjustment variables were generally present.
+Effect_Estimate_Available,Accuracy,0.56,Four studies were misclassified as "Adjusted" when the ground truth indicated "Both" (adjusted and unadjusted estimates available); suggests systematic under-recognition of unadjusted estimates.
+Overall,Mean score,0.80,The LLM extraction demonstrated strong performance on core identifiers; outcome measures; and exposure-related variables; but showed systematic weaknesses in extracting statistical parameters (Age_SE); sample size disambiguation; and recognizing when both adjusted and unadjusted estimates were reported.

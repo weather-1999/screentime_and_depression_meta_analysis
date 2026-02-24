@@ -1,0 +1,10 @@
+Study_ID,ES_Type,Original_ES,Final_ES,Final_Lower,Final_Upper,Direction_Action
+Primack_2009,OR,1.08,1.08,1.01,1.16,No change
+Grøntved_2015,OR,1.64,1.64,1.18,2.27,No change
+Wu_2016,OR,1.02,1.02,0.72,1.46,No change
+Khouja_2019,OR,1.35,1.35,1.10,1.65,No change
+Zink_2019,OR,1.23,1.23,0.96,1.57,No change
+Liu_2019,OR,1.36,1.36,1.04,1.79,No change
+Mars_2020,OR,1.41,1.41,0.90,2.20,No change
+Kandola_2021,IRR,1.13,1.13,1.05,1.22,No change
+Mougharbel_2023,OR,1.24,1.24,1.11,1.38,No change
